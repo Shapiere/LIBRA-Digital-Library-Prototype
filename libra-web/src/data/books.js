@@ -38,6 +38,18 @@ export const BOOKS = [
 
 export const CATEGORIES = ['All', 'Programming', 'Design', 'Science', 'Business', 'Fiction', 'History'];
 
+// Search index — used by Discover & Home (feature/discovery-catalog)
+export const SEARCHABLE_FIELDS = ['title', 'author', 'category', 'coverSub'];
+export function searchBooks(query, category = 'All') {
+  const q = (query || '').trim().toLowerCase();
+  return BOOKS.filter((b) => {
+    const matchCategory = category === 'All' || b.category === category;
+    if (!matchCategory) return false;
+    if (!q) return true;
+    return SEARCHABLE_FIELDS.some((f) => String(b[f] || '').toLowerCase().includes(q));
+  });
+}
+
 export const BORROW_META = {
   borrowDate: '24 Sep 2026',
   returnDate: '08 Oct 2026',
